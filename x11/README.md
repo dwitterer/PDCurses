@@ -1,8 +1,8 @@
 PDCurses for X11
 ================
 
-This is a port of PDCurses for X11, aka XCurses.  It is designed to 
-allow existing curses programs to be re-compiled with PDCurses, 
+This is a port of PDCurses for X11, aka XCurses.  It is designed to
+allow existing curses programs to be re-compiled with PDCurses,
 resulting in native X11 programs.
 
 
@@ -12,12 +12,10 @@ Building
 - Run "./configure". To build the wide-character version of the library,
   specify "--enable-widec" as a parameter. To use X Input Methods, add
   "--enable-xim". I recommend these options, but I haven't yet made
-  them the defaults, for the sake of backwards compatibility and due to
-  their new and relatively untested status.
+  them the defaults, for the sake of backwards compatibility.
 
   If your system is lacking in UTF-8 support, you can force the use of
-  UTF-8 instead of the system locale via "--enable-force-utf8". This is
-  generally more useful in Windows.
+  UTF-8 instead of the system locale via "--enable-force-utf8".
 
   If configure can't find your X include files or X libraries, you can
   specify the paths with the arguments "--x-includes=inc_path" and/or
@@ -34,26 +32,14 @@ Building
   any existing curses installations. Unrenamed copies of curses.h and
   panel.h are installed in (by default) /usr/local/include/xcurses.
 
-  libXpanel is just a symlink to libXCurses. Both curses and panel
-  functions are in the main library.
-
 
 Distribution Status
 -------------------
 
-As of April 13, 2006, the files in this directory are released to the 
-Public Domain, except for ScrollBox*, which are under essentially the 
-MIT X License.
-
-
-To be Done
-----------
-
-- have newterm() create a new X window
-
-- provide a command line parsing function to enable X command line
-  arguments to be parsed and stripped from the arguments passed back
-  to the calling procedure.
+As of April 13, 2006, the files in this directory are released to the
+Public Domain, except for ScrollBox*, which are under essentially the
+MIT X License; config.guess and config.sub, which are under the GPL; and
+configure, which is under a free license described within it.
 
 
 Acknowledgements

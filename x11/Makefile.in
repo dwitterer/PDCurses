@@ -681,7 +681,7 @@ manual:
 
 $(ZIPFILE):
 	(cd $(basedir); \
-	zip -9y $(ZIPFILE) README.md HISTORY.md IMPLEMNT *.spec *.mif *.def \
+	zip -9y $(ZIPFILE) README.md HISTORY.md IMPLEMENT *.spec *.mif *.def \
 	curses.h curspriv.h panel.h term.h pdcurses/README.md \
 	pdcurses/*.c \
 	demos/README.md demos/*.c demos/*.h \
@@ -702,7 +702,7 @@ tar:
 	(cd $(basedir)/..;ln -sf $(abs_basedir) $(PDC_DIR))
 	(cd $(basedir)/..; `pwd`;ls -l $(PDC_DIR);tar cvf - \
 	$(PDC_DIR)/README.md $(PDC_DIR)/HISTORY.md \
-	$(PDC_DIR)/IMPLEMNT $(PDC_DIR)/*.spec $(PDC_DIR)/*.mif \
+	$(PDC_DIR)/IMPLEMENT $(PDC_DIR)/*.spec $(PDC_DIR)/*.mif \
 	$(PDC_DIR)/*.def $(PDC_DIR)/x11/Makefile.in $(PDC_DIR)/x11/aclocal.m4 \
 	$(PDC_DIR)/x11/config.h.in $(PDC_DIR)/x11/configure \
 	$(PDC_DIR)/x11/config.guess $(PDC_DIR)/x11/xcurses-config.in \

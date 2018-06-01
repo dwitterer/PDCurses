@@ -15,7 +15,7 @@ PDCurses definitions list:  (Only define those needed)
     PDC_RGB         True if you want to use RGB color definitions
                     (Red = 1, Green = 2, Blue = 4) instead of BGR.
     PDC_WIDE        True if building wide-character support.
-    PDC_DLL_BUILD   True if building a Win32 DLL.
+    PDC_DLL_BUILD   True if building a Windows DLL.
     NCURSES_MOUSE_VERSION   Use the ncurses mouse API instead
                             of PDCurses' traditional mouse API.
 
@@ -29,6 +29,7 @@ PDCurses portable platform definitions list:
 
 **man-end****************************************************************/
 
+#define PDC_BUILD 3601
 #define PDCURSES        1      /* PDCurses-only routines */
 #define XOPEN           1      /* X/Open Curses routines */
 #define SYSVcurses      1      /* System V Curses routines */
@@ -387,6 +388,7 @@ typedef struct
     int   exit_key;
 #endif
     short line_color;     /* color of line attributes - default -1 */
+    attr_t termattrs;     /* attribute capabilities */
 } SCREEN;
 
 /*----------------------------------------------------------------------
@@ -453,7 +455,7 @@ long form:
     +--------------------------------------------------------------------+
           color number      |     modifiers         |   character eg 'a'
 
-The available non-color attributes are bold, underline, invisible,
+The available non-color attributes are bold, italic, underline, invisible,
 right-line, left-line, protect, reverse and blink. 256 color pairs (8
 bits), 8 bits for other attributes, and 16 bits for character data.
 
@@ -555,13 +557,12 @@ fifteen bits,  five bits for each of the three channels) and background RGB
 # define A_COLOR      (chtype)0xf800  /* System V */
 
 # define A_ALTCHARSET A_NORMAL        /* X/Open */
-# define A_PROTECT    A_NORMAL        /* X/Open */
 # define A_UNDERLINE  A_NORMAL        /* X/Open */
 # define A_OVERLINE   A_NORMAL        /* X/Open */
 # define A_STRIKEOUT  A_NORMAL        /* X/Open */
 
-# define A_LEFTLINE   A_NORMAL
-# define A_RIGHTLINE  A_NORMAL
+# define A_LEFT       A_NORMAL
+# define A_RIGHT      A_NORMAL
 # define A_ITALIC     A_NORMAL
 # define A_INVIS      A_NORMAL
 # define A_RGB_COLOR  A_NORMAL
@@ -570,6 +571,8 @@ fifteen bits,  five bits for each of the three channels) and background RGB
 # define PDC_COLOR_SHIFT 11
 #endif
 
+#define A_LEFTLINE    A_LEFT
+#define A_RIGHTLINE   A_RIGHT
 #define A_STANDOUT    (A_REVERSE | A_BOLD) /* X/Open */
 
 #define CHR_MSK       A_CHARTEXT           /* Obsolete */
@@ -586,17 +589,18 @@ fifteen bits,  five bits for each of the three channels) and background RGB
 #define WA_BOLD       A_BOLD
 #define WA_DIM        A_DIM
 #define WA_INVIS      A_INVIS
-#define WA_LEFT       A_LEFTLINE
+#define WA_ITALIC     A_ITALIC
+#define WA_LEFT       A_LEFT
 #define WA_PROTECT    A_PROTECT
 #define WA_REVERSE    A_REVERSE
-#define WA_RIGHT      A_RIGHTLINE
+#define WA_RIGHT      A_RIGHT
 #define WA_STANDOUT   A_STANDOUT
 #define WA_UNDERLINE  A_UNDERLINE
 
-#define WA_HORIZONTAL A_NORMAL
-#define WA_LOW        A_NORMAL
-#define WA_TOP        A_NORMAL
-#define WA_VERTICAL   A_NORMAL
+#define WA_HORIZONTAL A_HORIZONTAL
+#define WA_LOW        A_LOW
+#define WA_TOP        A_TOP
+#define WA_VERTICAL   A_VERTICAL
 
 #define WA_ATTRIBUTES A_ATTRIBUTES
 

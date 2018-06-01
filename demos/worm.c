@@ -154,7 +154,8 @@ int main(int argc, char *argv[])
     const struct options *op;
     struct worm *w;
     short **ref, *ip;
-    int x, y, n, h, last, bottom, seed;
+    time_t seed;
+    int x, y, n, h, last, bottom;
 
     for (x = 1; x < argc; x++)
     {

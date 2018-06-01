@@ -3,6 +3,7 @@
 #include "pdcsdl.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 /*man-start**************************************************************
 
@@ -121,7 +122,7 @@ int PDC_clearclipboard(void)
 {
     PDC_LOG(("PDC_clearclipboard() - called\n"));
 
-    if (pdc_SDL_clipboard) 
+    if (pdc_SDL_clipboard)
     {
         free(pdc_SDL_clipboard);
         pdc_SDL_clipboard = NULL;
