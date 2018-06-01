@@ -1,10 +1,16 @@
 Welcome to PDCurses!
 ====================
 
-Public Domain Curses, AKA PDCurses, is an implementation of X/Open curses for multiple platforms. Relative to the 'official'
-PDCurses project, this has a variety of improvements, adding a Windows GUI "flavor" of Curses and expanding the capabilities of the other flavors (SDL, X11, Win32 console, OS/2 and DOS). Some details and screen shots are available at:
+This is a *fork* of the Bill-Gray/PDCurses repository, which in turn is a fork of the original wmcbrine/PDCurses repository.
+
+Public Domain Curses, AKA PDCurses, is an implementation of X/OPEN curses for multiple platforms. Relative to the 'official'
+PDCurses project, this has a variety of improvements, adding a Windows GUI "flavor" of curses and expanding the capabilities of the other flavors (SDL, X11, Win32 console, OS/2 and DOS). Some details and screen shots are available at:
 
 http://www.projectpluto.com/win32a.htm
+
+The latest version of the original project can be found at:
+
+http://www.pdcurses.org/
 
 Legal Stuff
 -----------
