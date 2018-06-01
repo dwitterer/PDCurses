@@ -28,17 +28,12 @@ pdckbd
 
 **man-end****************************************************************/
 
-#ifdef EMXVIDEO
-# include <termios.h>
-static int tahead = -1;
-#else
 static KBDINFO kbdinfo;     /* default keyboard mode */
 static HMOU mouse_handle = 0;
 static MOUSE_STATUS old_mouse_status;
 static USHORT old_shift = 0;
 static bool key_pressed = FALSE;
 static int mouse_events = 0;
-#endif
 
 /************************************************************************
  *    Table for key code translation of function keys in keypad mode    *
@@ -100,8 +95,6 @@ unsigned long PDC_get_input_fd(void)
     return (unsigned long)fileno(stdin);
 }
 
-#ifndef EMXVIDEO
-
 void PDC_get_keyboard_info(void)
 {
     kbdinfo.cb = sizeof(kbdinfo);
@@ -113,13 +106,10 @@ void PDC_set_keyboard_default(void)
     KbdSetStatus(&kbdinfo, 0);
 }
 
-#endif /* ifndef EMXVIDEO */
-
 void PDC_set_keyboard_binary(bool on)
 {
     PDC_LOG(("PDC_set_keyboard_binary() - called\n"));
 
-#ifndef EMXVIDEO
     if (on)
     {
         kbdinfo.fsMask &= ~(KEYBOARD_ASCII_MODE);
@@ -132,7 +122,6 @@ void PDC_set_keyboard_binary(bool on)
     }
 
     KbdSetStatus(&kbdinfo, 0);
-#endif
 
 #ifdef HAVE_SIGNAL
     signal(SIGBREAK, on ? SIG_IGN : SIG_DFL);
@@ -143,24 +132,7 @@ void PDC_set_keyboard_binary(bool on)
 
 bool PDC_check_key(void)
 {
-#if !defined(_MSC_VER) && !defined(EMXVIDEO)
     KBDKEYINFO keyInfo = {0};
-#endif
-
-#ifdef EMXVIDEO
-    if (tahead == -1)       /* Nothing typed yet */
-    {                    
-        tahead = _read_kbd(0, 0, 0);
-
-        /* Read additional */
-
-        if (tahead == 0)    
-            tahead = _read_kbd(0, 1, 0) << 8;
-    }
-
-    return (tahead != -1);
-#else
-# ifndef _MSC_VER
 
     KbdGetStatus(&kbdinfo, 0);
 
@@ -187,13 +159,7 @@ bool PDC_check_key(void)
 
     KbdPeek(&keyInfo, 0);   /* peek at keyboard  */
     return (keyInfo.fbStatus != 0);
-# else
-    return kbhit();
-# endif
-#endif
-}         
-
-#ifndef EMXVIDEO
+}
 
 static int _process_mouse_events(void)
 {
@@ -214,8 +180,8 @@ static int _process_mouse_events(void)
             ((event.fs & move_mask[i]) ? BUTTON_MOVED : 0) |
             ((event.fs & press_mask[i]) ? BUTTON_PRESSED : 0);
 
-        /* PRESS events are sometimes mistakenly reported as MOVE 
-           events. A MOVE should always follow a PRESS, so treat a MOVE 
+        /* PRESS events are sometimes mistakenly reported as MOVE
+           events. A MOVE should always follow a PRESS, so treat a MOVE
            immediately after a RELEASE as a PRESS. */
 
         if ((pdc_mouse_status.button[i] == BUTTON_MOVED) &&
@@ -226,7 +192,7 @@ static int _process_mouse_events(void)
 
         if (pdc_mouse_status.button[i] == BUTTON_PRESSED && SP->mouse_wait)
         {
-            /* Check for a click -- a PRESS followed immediately by a 
+            /* Check for a click -- a PRESS followed immediately by a
                release */
 
             if (!mouse_events)
@@ -312,34 +278,13 @@ static int _process_mouse_events(void)
     return KEY_MOUSE;
 }
 
-#endif
-
 /* return the next available key or mouse event */
 
 int PDC_get_key(void)
 {
     int key, scan;
-#ifndef EMXVIDEO
     KBDKEYINFO keyInfo = {0};
-#endif
 
-#ifdef EMXVIDEO
-    if (tahead == -1)
-    {
-        tahead = _read_kbd(0, 1, 0);
-
-        /* Read additional */
-
-        if (tahead == 0)
-            tahead = _read_kbd(0, 1, 0) << 8;
-    }
-
-    key = tahead & 0xff;
-    scan = tahead >> 8;
-    pdc_key_modifiers = 0L;
-
-    tahead = -1;
-#else
     pdc_key_modifiers = 0L;
 
     if (mouse_handle && mouse_events)
@@ -400,7 +345,7 @@ int PDC_get_key(void)
         if (keyInfo.fsState & (KBDSTF_LEFTSHIFT|KBDSTF_RIGHTSHIFT))
             pdc_key_modifiers |= PDC_KEY_MODIFIER_SHIFT;
     }
-#endif
+
     if (scan == 0x1c && key == 0x0a)    /* ^Enter */
         key = CTL_ENTER;
     else if (scan == 0xe0 && key == 0x0d)   /* PadEnter */
@@ -467,20 +412,14 @@ void PDC_flushinp(void)
 {
     PDC_LOG(("PDC_flushinp() - called\n"));
 
-#ifdef EMXVIDEO
-    tcflush(0, TCIFLUSH);
-#else
     if (mouse_handle)
         MouFlushQue(mouse_handle);
 
     KbdFlushBuffer(0);
-#endif
 }
 
 int PDC_mouse_set(void)
 {
-#ifndef EMXVIDEO
-
     unsigned long mbe = SP->_trap_mbe;
 
     if (mbe && !mouse_handle)
@@ -501,15 +440,15 @@ int PDC_mouse_set(void)
         USHORT mask = ((mbe & (BUTTON1_PRESSED | BUTTON1_CLICKED |
                                BUTTON1_MOVED)) ? 6 : 0) |
 
-                      ((mbe & (BUTTON3_PRESSED | BUTTON3_CLICKED | 
+                      ((mbe & (BUTTON3_PRESSED | BUTTON3_CLICKED |
                                BUTTON3_MOVED)) ? 24 : 0) |
 
-                      ((mbe & (BUTTON2_PRESSED | BUTTON2_CLICKED | 
+                      ((mbe & (BUTTON2_PRESSED | BUTTON2_CLICKED |
                                BUTTON2_MOVED)) ? 96 : 0);
 
         MouSetEventMask(&mask, mouse_handle);
     }
-#endif
+
     return OK;
 }
 

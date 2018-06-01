@@ -1,13 +1,4 @@
 /* Public Domain Curses */
-                          
-/* MS C doesn't return flags from int86() */
-#ifdef MSC
-# define USE_KBHIT
-#endif
-
-#ifdef USE_KBHIT
-# include <conio.h>
-#endif
 
 #include "pdcdos.h"
 
@@ -215,14 +206,10 @@ bool PDC_check_key(void)
 
     old_shift = shift_status;
 
-#ifndef USE_KBHIT
     regs.h.ah = check_function;
     PDCINT(0x16, regs);
 
     return !(regs.W.flags & 64);
-#else
-    return kbhit();
-#endif
 }
 
 static int _process_mouse_events(void)
@@ -279,7 +266,7 @@ static int _process_mouse_events(void)
         {
             if (button[i].pressed)
             {
-                /* Check for a click -- a PRESS followed 
+                /* Check for a click -- a PRESS followed
                    immediately by a release */
 
                 if (!button[i].released)
@@ -453,14 +440,14 @@ int PDC_get_key(void)
     return key;
 }
 
-/* discard any pending keyboard or mouse input -- this is the core 
+/* discard any pending keyboard or mouse input -- this is the core
    routine for flushinp() */
 
 void PDC_flushinp(void)
 {
     PDC_LOG(("PDC_flushinp() - called\n"));
 
-    /* Force the BIOS keyboard buffer head and tail pointers to be 
+    /* Force the BIOS keyboard buffer head and tail pointers to be
        the same...  Real nasty trick... */
 
     setdosmemword(0x41a, getdosmemword(0x41c));

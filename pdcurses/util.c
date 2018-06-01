@@ -77,13 +77,8 @@ util
 
 **man-end****************************************************************/
 
-#ifdef PDC_WIDE
-# ifdef PDC_FORCE_UTF8
-#  include <string.h>
-# else
-#  include <stdlib.h>
-# endif
-#endif
+#include <stdlib.h>
+#include <string.h>
 
 char *unctrl(chtype c)
 {

@@ -66,11 +66,10 @@ color
    is set at the time start_color() is called, that's equivalent to
    calling use_default_colors().
 
-   PDC_set_line_color() is used to set the color, globally, for
-   the color of the lines drawn for the attributes: A_UNDERLINE,
-   A_OVERLINE, A_LEFTLINE and A_RIGHTLINE. A value of -1 (the
-   default) indicates that the current foreground color should be
-   used.
+   PDC_set_line_color() is used to set the color, globally, for the
+   color of the lines drawn for the attributes: A_UNDERLINE, A_LEFT
+   and A_RIGHT. A value of -1 (the default) indicates that the
+   current foreground color should be used.
 
    NOTE: COLOR_PAIR() and PAIR_NUMBER() are implemented as macros.
 
@@ -117,7 +116,7 @@ int start_color(void)
 
     pdc_color_started = TRUE;
 
-    PDC_set_blink(FALSE);   /* Also sets COLORS, to 8 or 16 */
+    PDC_set_blink(FALSE);   /* Also sets COLORS */
 
     if (!default_colors && SP->orig_attr && getenv("PDC_ORIGINAL_COLORS"))
         default_colors = TRUE;
@@ -280,8 +279,7 @@ int PDC_set_line_color(short color)
 
 void PDC_init_atrtab(void)
 {
-    int i;
-    short fg, bg;
+    short i, fg, bg;
 
     if (pdc_color_started && !default_colors)
     {

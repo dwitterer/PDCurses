@@ -1,9 +1,5 @@
-#include <stdio.h>
-#include <signal.h>
 #include <curses.h>
-#include <ctype.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <time.h>
 
 #define DELAYSIZE 100
@@ -20,13 +16,16 @@ short color_table[] =
 
 int main(int argc, char **argv)
 {
-    int i, start, end, row, diff, flag, direction, seed;
+    time_t seed;
+    int start, end, row, diff, flag, direction;
+    short i;
 
 #ifdef XCURSES
     Xinitscr(argc, argv);
 #else
     initscr();
 #endif
+    keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
     noecho();
 

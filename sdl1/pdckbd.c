@@ -134,6 +134,8 @@ static int _process_key_event(void)
     {
         if (SP->return_key_modifiers && event.key.keysym.sym == oldkey)
         {
+            SP->key_code = TRUE;
+
             switch (oldkey)
             {
             case SDLK_RSHIFT:
@@ -151,6 +153,8 @@ static int _process_key_event(void)
             default:
                 break;
             }
+
+            SP->key_code = FALSE;
         }
 
         return -1;
@@ -361,6 +365,7 @@ int PDC_get_key(void)
             if (!SP->resized)
             {
                 SP->resized = TRUE;
+                SP->key_code = TRUE;
                 return KEY_RESIZE;
             }
         }
@@ -377,6 +382,8 @@ int PDC_get_key(void)
     case SDL_KEYDOWN:
         PDC_mouse_set();
         return _process_key_event();
+    case SDL_USEREVENT:
+        PDC_blink_text();
     }
 
     return -1;

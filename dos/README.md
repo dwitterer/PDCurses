@@ -9,11 +9,10 @@ Building
 
 - Choose the appropriate makefile for your compiler:
 
-        bccdos.mak   - Borland C++ 3.0+
-        gccdos.mak   - DJGPP V2
-        mscdos.mak   - Microsoft C
-        wccdos16.mak - Open Watcom 1.8+ (16-bit)
-        wccdos4g.mak - Open Watcom 1.8+ (32-bit)
+        Makefile     - DJGPP V2
+        Makefile.bcc - Borland C++ 3.0+
+        Makefile.w16 - Open Watcom 1.8+ (16-bit)
+        Makefile.w4g - Open Watcom 1.8+ (32-bit)
 
 - For 16-bit compilers, you can change the memory MODEL in the makefile.
   (Large model is the default, and recommended.)
@@ -28,12 +27,9 @@ Building
 
         make -f makefile
 
-  (For Watcom, use "wmake" instead of "make"; for MSVC, "nmake".) You'll
-  get the libraries (pdcurses.lib or .a, depending on your compiler; and
-  panel.lib or .a), the demos (*.exe), and a lot of object files. Note
-  that the panel library is just a copy of the main library, provided 
-  for convenience; both panel and curses functions are in the main 
-  library.
+  (For Watcom, use "wmake" instead of "make".) You'll get the libraries
+  (pdcurses.lib or .a, depending on your compiler), the demos (*.exe),
+  and a lot of object files.
 
 
 Distribution Status
